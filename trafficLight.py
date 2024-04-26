@@ -66,11 +66,11 @@ def detect_traffic_lights(image):
         green_detected = True
 
     # Определение цвета сигнала светофора
-    if red_detected:
+    if red_detected and np.mean(mask_red[:int(mask_red.shape[0]*0.2), :]) > 0:
         color = "Red"
-    elif yellow_detected:
+    elif yellow_detected and np.mean(mask_yellow[int(mask_yellow.shape[0]*0.4):int(mask_yellow.shape[0]*0.6), :]) > 0:
         color = "Yellow"
-    elif green_detected:
+    elif green_detected and np.mean(mask_green[int(mask_green.shape[0]*0.8):, :]) > 0:
         color = "Green"
 
     return color, shape
@@ -88,7 +88,7 @@ while True:
         color, shape = detect_traffic_lights(frame)
         
         # Отображение текста с определенным цветом и формой
-        cv2.putText(frame, f"{color} {shape}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.putText(frame, f"{color}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
         # Отображение обработанного кадра
         cv2.imshow('Traffic Lights Detection', frame)
